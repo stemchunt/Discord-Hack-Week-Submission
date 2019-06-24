@@ -22,8 +22,8 @@ class Database(gcpAuth: GoogleCredentials, gcpProjectId: String) {
         .service
 
     /**
-     * @return command prefix given a guildID
-     *  @param guildID GuildID of a server
+     * @return command prefix of a Guild
+     *  @param guildID ID of a Guild
      * */
     fun getCommandPrefix(guildID: String): String {
         val docRef: DocumentReference = db.collection("guilds").document(guildID)
@@ -33,13 +33,51 @@ class Database(gcpAuth: GoogleCredentials, gcpProjectId: String) {
 
     /**
      * Adds or Sets a prefix to the database.
-     * @param guildID GuildID of a server
+     * @param guildID ID of a Guild
      * @param prefix Command Prefix
      */
     fun setCommandPrefix(guildID: String, prefix: String) {
         val docRef: DocumentReference = db.collection("guilds").document(guildID)
         val data: MutableMap<String, Any> = docRef.get().get().data!!
         data["commandPrefix"] = prefix
+        val result: ApiFuture<WriteResult> = docRef.set(data)
+        result.get()
+    }
+
+    /**
+     *  @return a list of filters for a Guild
+     *  @param guildID ID of a Guild
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun getFilters(guildID: String): List<String> {
+        val docRef: DocumentReference = db.collection("guilds").document(guildID)
+        val data: MutableMap<String, Any> = docRef.get().get().data!!
+        return data["filters"] as List<String>
+    }
+
+    /**
+     *  Sets filters for a Guild in database
+     *  @param guildID ID of a Guild
+     *  @param filters List of filters
+     */
+    fun setFilters(guildID: String, filters: MutableList<String>) {
+        val docRef: DocumentReference = db.collection("guilds").document(guildID)
+        val data: MutableMap<String, Any> = docRef.get().get().data!!
+        data["filters"] = filters
+        val result: ApiFuture<WriteResult> = docRef.set(data)
+        result.get()
+    }
+
+    /**
+     *  Adds Filters for a Guild to database
+     *  @param guildID ID of a Guild
+     *  @param filters List of filters
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun addFilters(guildID: String, filters: MutableList<String>) {
+        val docRef: DocumentReference = db.collection("guilds").document(guildID)
+        val data: MutableMap<String, Any> = docRef.get().get().data!!
+        ((data["filters"] as MutableList<String>?) ?: mutableListOf()).addAll(filters)
         val result: ApiFuture<WriteResult> = docRef.set(data)
         result.get()
     }
