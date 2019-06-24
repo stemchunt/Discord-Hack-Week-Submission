@@ -1,8 +1,8 @@
-# Discord Hack Week Submition
+# Discord Hack Week Submission
 
-| Idea Title       | TBD                         |
-|------------------|-----------------------------|
-| Short Desc       | TBD                         |
-| Members Comitted | Kabir Kwatra, Ivar Rydstrom |
-| Skills We Got    | TBD                         |
-| Skills Needed    | TBD                         |
+| Idea Title        | TBD                                                    |
+|-------------------|--------------------------------------------------------|
+| Short Desc        | TBD                                                    |
+| Members Committed | Kabir Kwatra, Ivar Rydstrom, Raymond Wong, Aditya Dhir |
+| Skills We Got     | TBD                                                    |
+| Skills Needed     | TBD                                                    |
