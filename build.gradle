@@ -41,5 +41,5 @@ compileTestKotlin {
 }
 
 application {
-    mainClassName = 'hackweek.group.filterbot.Main'
+    mainClassName = 'hackweek.group.filterbot.MainKt'
 }
