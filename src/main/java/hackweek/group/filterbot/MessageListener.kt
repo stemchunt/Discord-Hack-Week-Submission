@@ -8,6 +8,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter
 class MessageListener(gcpAuth: GoogleCredentials, gcpProjectID: String) : ListenerAdapter() {
 
     var database = Database(gcpAuth, gcpProjectID)
+    var commandManager = CommandManager(database)
 
     override fun onMessageReceived(event: MessageReceivedEvent?) {
         super.onMessageReceived(event)
@@ -15,19 +16,20 @@ class MessageListener(gcpAuth: GoogleCredentials, gcpProjectID: String) : Listen
         if (event == null) return
 
         if (event.message.isCommand(event.guild.id)) {
-            // TODO
-        }
+            commandManager.handle(event)
+        } else {
 
-        if (event.message.hasImage()) {
-            // TODO
-        }
+            if (event.message.hasImage()) {
+                // TODO
+            }
 
-        if (event.message.hasImage()) {
-            // TODO
-        }
+            if (event.message.hasImage()) {
+                // TODO
+            }
 
-        if (event.message.hasText()) {
-            // TODO
+            if (event.message.hasText()) {
+                // TODO
+            }
         }
 
     }

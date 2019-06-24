@@ -13,6 +13,9 @@ import com.google.cloud.firestore.WriteResult
  * @constructor Creates a Firestore Database given credentials and a projectID
  * */
 class Database(gcpAuth: GoogleCredentials, gcpProjectId: String) {
+    companion object {
+        const val DEFAULT_COMMAND_PREFIX = "f!"
+    }
     // Firestore Database
     private val db: Firestore = FirestoreOptions.getDefaultInstance()
         .toBuilder()
@@ -28,7 +31,8 @@ class Database(gcpAuth: GoogleCredentials, gcpProjectId: String) {
     fun getCommandPrefix(guildID: String): String {
         val docRef: DocumentReference = db.collection("guilds").document(guildID)
         val data: MutableMap<String, Any> = docRef.get().get().data!!
-        return data["commandPrefix"] as String
+        return data["commandPrefix"] as String? ?: DEFAULT_COMMAND_PREFIX
+        // default command prefix if firestore returns null
     }
 
     /**
