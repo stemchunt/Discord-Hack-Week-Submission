@@ -1,6 +1,7 @@
 package hackweek.group.filterbot
 
 import com.google.auth.oauth2.GoogleCredentials
+import net.dv8tion.jda.core.entities.ChannelType
 import net.dv8tion.jda.core.entities.EmbedType
 import net.dv8tion.jda.core.entities.Message
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent
@@ -26,6 +27,10 @@ class MessageListener(gcpAuth: GoogleCredentials, gcpProjectID: String) : Listen
         super.onMessageReceived(event)
 
         if (event == null) return
+        if (event.guild == null) {
+            event.channel.sendMessage("This bot does not support direct messages or groups").queue()
+            return
+        }
 
         if (event.message.isCommand(event.guild.id)) {
             commandManager.handle(event)
