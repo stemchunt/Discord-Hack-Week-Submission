@@ -15,6 +15,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter
 class MessageListener(gcpAuth: GoogleCredentials, gcpProjectID: String) : ListenerAdapter() {
     val database = Database(gcpAuth, gcpProjectID)
     private val commandManager = CommandManager(database)
+    private val textScanner = TextScanner(database)
     private val imageScanner = ImageScanner(database, gcpAuth)
 
     /**
@@ -39,7 +40,7 @@ class MessageListener(gcpAuth: GoogleCredentials, gcpProjectID: String) : Listen
             }
 
             if (event.message.hasText()) {
-                // TODO
+                textScanner.handle(event.message)
             }
         }
 
@@ -90,7 +91,9 @@ fun Message.hasVideo(): Boolean {
     }
 }
 
-fun Message.hasText(): Boolean {
-    // TODO
-    return false
-}
+/**
+ * Extension Function
+ * @return if message has text
+ */
+fun Message.hasText(): Boolean =
+    this.contentStripped.isNotEmpty()

@@ -14,8 +14,14 @@ class TextScanner(private val database: Database): Scanner<Message> {
      * @param input Message to handle
      */
     override fun handle(input: Message) {
-        if (scan(input).first)
+        val scan = scan(input)
+        if (scan.first) {
+            val result = scan.second!!.sorted()
             input.delete().queue()
+            var msg = "Image sent by ${input.author.name} was filtered due to filter(s):"
+            result.forEach { msg += " ${it.first}," }
+            input.channel.sendMessage(msg).queue()
+        }
     }
 
     /**
