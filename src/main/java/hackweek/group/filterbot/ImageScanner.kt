@@ -36,7 +36,7 @@ class ImageScanner(
             val result = scan.second!!.sorted()
             input.delete().queue()
             var msg = "Image send by ${input.author.name} was filtered by"
-            result.forEach { msg += " ${it.first} (${"%.2".format(it.second * 100)}%)," }
+            result.forEach { msg += " ${it.first} (${"%.2f".format(it.second * 100)}%)," }
             input.channel.sendMessage(msg.substring(0, msg.length - 1))
         }
     }
