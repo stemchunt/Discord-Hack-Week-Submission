@@ -37,7 +37,7 @@ class ImageScanner(
             input.delete().queue()
             var msg = "Image send by ${input.author.name} was filtered by"
             result.forEach { msg += " ${it.first} (${"%.2f".format(it.second * 100)}%)," }
-            input.channel.sendMessage(msg.substring(0, msg.length - 1))
+            input.channel.sendMessage(msg.substring(0, msg.length - 1)).queue()
         }
     }
 
@@ -48,21 +48,24 @@ class ImageScanner(
      *  @return Pair with hasMatch and FilterMatches if hasMatch
      */
     override fun scan(input: Message): Pair<Boolean, FilterMatches?> {
+        val filters = database.getFilters(input.guild.id)
         val matches = FilterMatches()
-        input.attachments.forEach {
-            if (it.isImage) {
-                val img = downloadImage(it)!!
+        input.attachments.forEach { attachment ->
+            if (attachment.isImage) {
+                val img = downloadImage(attachment)!!
                 val response = requestImage(img)
                 val responses = response.responsesList!!
-
                 responses.forEach { res ->
-                    res.labelAnnotationsList.forEach { annotation: EntityAnnotation ->
-                        matches.add(
-                            Pair(
-                                annotation.description,
-                                annotation.score.toDouble()
-                            )
-                        )
+                    res.labelAnnotationsList.forEach { annotation ->
+                        filters.forEach { filter ->
+                            if (filter.equals(annotation.description, ignoreCase = true))
+                                matches.add(
+                                    Pair(
+                                        annotation.description,
+                                        annotation.score.toDouble()
+                                    )
+                                )
+                        }
                     }
                 }
             }
@@ -86,16 +89,12 @@ class ImageScanner(
 
     private fun downloadImage(it: Message.Attachment): Image? {
         val download = File(it.fileName)
-        return if (it.download(download))
-            Image.newBuilder()
-                .setContent(
-                    ByteString.copyFrom(
-                        download.readBytes()
-                    )
-                ).build()!!
-        else {
-            println(it)
-            null
-        }
+        val imgBuilder = Image.newBuilder()
+        if (it.download(download)) {
+            imgBuilder.content = ByteString.copyFrom(download.readBytes())
+            download.delete()
+        } else println(it)
+
+        return imgBuilder.build()
     }
 }
