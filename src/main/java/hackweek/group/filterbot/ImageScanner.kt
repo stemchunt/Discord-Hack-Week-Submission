@@ -20,7 +20,6 @@ class ImageScanner(
             .setCredentialsProvider(
                 FixedCredentialsProvider
                     .create(gcpAuth)
-
             ).build()!!
     )
 
@@ -75,6 +74,11 @@ class ImageScanner(
         return Pair(matches.isNotEmpty(), if (matches.isNotEmpty()) matches else null)
     }
 
+    /**
+     * Applies label detection with Google Cloud Vision
+     * @param img Image to do label detection on
+     * @return Image annotations response
+     */
     private fun requestImage(img: Image): BatchAnnotateImagesResponse {
         val feat = Feature.newBuilder()
             .setType(Feature.Type.LABEL_DETECTION)
@@ -87,13 +91,18 @@ class ImageScanner(
         return visionClient.batchAnnotateImages(listOf(request))!!
     }
 
-    private fun downloadImage(it: Message.Attachment): Image? {
-        val download = File(it.fileName)
+    /**
+     * Downloads an image
+     * @param attachment image attachment to download
+     * @return downloaded image or null
+     */
+    private fun downloadImage(attachment: Message.Attachment): Image? {
+        val download = File(attachment.fileName)
         val imgBuilder = Image.newBuilder()
-        if (it.download(download)) {
+        if (attachment.download(download)) {
             imgBuilder.content = ByteString.copyFrom(download.readBytes())
             download.delete()
-        } else println(it)
+        } else println(attachment)
 
         return imgBuilder.build()
     }

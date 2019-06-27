@@ -6,12 +6,21 @@ import net.dv8tion.jda.core.entities.Message
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent
 import net.dv8tion.jda.core.hooks.ListenerAdapter
 
+/**
+ * MessageListener handles messages received
+ * @param gcpAuth Google Cloud Credentials for message scanning
+ * @param gcpProjectID Project ID for Google Cloud Project
+ * @property database Database of guilds with filters
+ */
 class MessageListener(gcpAuth: GoogleCredentials, gcpProjectID: String) : ListenerAdapter() {
-
-    private val database = Database(gcpAuth, gcpProjectID)
+    val database = Database(gcpAuth, gcpProjectID)
     private val commandManager = CommandManager(database)
     private val imageScanner = ImageScanner(database, gcpAuth)
 
+    /**
+     * Handles with message events
+     * @param event MessageReceivedEvent to handle
+     */
     override fun onMessageReceived(event: MessageReceivedEvent?) {
         super.onMessageReceived(event)
 
@@ -36,12 +45,20 @@ class MessageListener(gcpAuth: GoogleCredentials, gcpProjectID: String) : Listen
 
     }
 
+    /**
+     * Private Extension function to check if a message is a command
+     * @param guildID to check command prefix
+     * @return if this message is a command
+     */
     private fun Message.isCommand(guildID: String): Boolean =
         this.contentStripped.toLowerCase()
             .startsWith(database.getCommandPrefix(guildID))
 }
 
-
+/**
+ * Extension function
+ * @return if message has an image
+ */
 fun Message.hasImage(): Boolean {
     this.attachments.forEach {
         if (it.isImage) return true
@@ -57,6 +74,10 @@ fun Message.hasImage(): Boolean {
 
 }
 
+/**
+ * Extension Function
+ * @return if message has a video
+ */
 fun Message.hasVideo(): Boolean {
     if (this.embeds.isNullOrEmpty())
         return false
