@@ -134,7 +134,8 @@ public class CommandManager {
 
     private void setPrefix(Message message) {
         String cmdPrefix = database.getCommandPrefix(message.getGuild().getId());
-        String newPrefix = message.getContentStripped().toLowerCase().substring(cmdPrefix.length()).trim();
+        String messageWithoutPrefix = message.getContentStripped().toLowerCase().substring(cmdPrefix.length()).trim();
+        String newPrefix = messageWithoutPrefix.substring("setPrefix".length()).trim();
         database.setCommandPrefix(message.getGuild().getId(), newPrefix);
         message.getChannel().sendMessage("Prefix successfully set to " + newPrefix + "(applies server-wide).").queue();
     }
