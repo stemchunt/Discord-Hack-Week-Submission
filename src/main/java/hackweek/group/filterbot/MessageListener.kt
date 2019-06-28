@@ -26,8 +26,10 @@ class MessageListener(gcpAuth: GoogleCredentials, gcpProjectID: String) : Listen
     override fun onMessageReceived(event: MessageReceivedEvent?) {
         super.onMessageReceived(event)
 
-        if (event == null) return
-        if (event.guild == null) {
+        if (event == null) return // null events
+        if (event.author.id == event.jda.selfUser.id) return // Ignore own messages
+
+        if (event.guild == null) { // non guild events
             event.channel.sendMessage("This bot does not support direct messages or groups").queue()
             return
         }
