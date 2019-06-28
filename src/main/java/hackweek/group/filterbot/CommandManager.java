@@ -57,7 +57,7 @@ public class CommandManager {
         if (messageWithoutPrefix.startsWith(Command.REMOVE.toString().toLowerCase())) return Command.REMOVE;
         if (messageWithoutPrefix.startsWith(Command.TEST.toString().toLowerCase())) return Command.TEST;
         if (messageWithoutPrefix.startsWith(Command.LIST.toString().toLowerCase())) return Command.LIST;
-        if (messageWithoutPrefix.startsWith(Command.SET_PREFIX.toString().toLowerCase())) return Command.SET_PREFIX;
+        if (messageWithoutPrefix.startsWith("setPrefix".toLowerCase())) return Command.SET_PREFIX;
 
         return Command.INVALID;
 
