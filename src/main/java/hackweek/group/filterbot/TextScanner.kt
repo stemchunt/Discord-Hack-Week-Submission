@@ -20,7 +20,7 @@ class TextScanner(private val database: Database): Scanner<Message> {
             input.delete().queue()
             var msg = "Image sent by ${input.author.name} was filtered due to filter(s):"
             result.forEach { msg += " ${it.first}," }
-            input.channel.sendMessage(msg).queue()
+            input.channel.sendMessage(msg.substring(0, msg.length() - 1).queue()
         }
     }
 
