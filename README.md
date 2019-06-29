@@ -1,5 +1,7 @@
 # Filter Discord Bot [![CircleCI](https://circleci.com/gh/KabirKwatra/Discord-Hack-Week-Submission.svg?style=svg)](https://circleci.com/gh/KabirKwatra/Discord-Hack-Week-Submission)
 
+[Invite](https://discordapp.com/oauth2/authorize?client_id=593348457306259469&scope=bot)
+
 | Title             | Filter          					                                              |
 |-------------------|-------------------------------------------------------------------------|
 | Short Desc        | A bot that filters text, images, and video based on user-defined tags.  |
