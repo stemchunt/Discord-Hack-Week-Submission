@@ -17,6 +17,7 @@ class MessageListener(gcpAuth: GoogleCredentials, gcpProjectID: String) : Listen
     private val commandManager = CommandManager(database)
     private val textScanner = TextScanner(database)
     private val imageScanner = ImageScanner(database)
+    private val videoScanner = VideoScanner(database)
 
     /**
      * Handles with message events
@@ -42,7 +43,7 @@ class MessageListener(gcpAuth: GoogleCredentials, gcpProjectID: String) : Listen
             }
 
             if (event.message.hasVideo()) {
-
+                videoScanner.handle(event.message)
             }
 
             if (event.message.hasText()) {

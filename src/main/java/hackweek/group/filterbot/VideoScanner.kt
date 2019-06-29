@@ -1,18 +1,15 @@
 package hackweek.group.filterbot
 
-import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.videointelligence.v1.AnnotateVideoRequest
 import com.google.cloud.videointelligence.v1.Feature
 import com.google.cloud.videointelligence.v1.LabelAnnotation
 import com.google.cloud.videointelligence.v1.VideoIntelligenceServiceClient
-import com.google.cloud.vision.v1.EntityAnnotation
 import net.dv8tion.jda.core.entities.EmbedType
 import net.dv8tion.jda.core.entities.Message
 
 
 class VideoScanner(
-    private val database: Database,
-    gcpAuth: GoogleCredentials
+    private val database: Database
 ) : Scanner<Message> {
     private val videoIntelligenceServiceClient = VideoIntelligenceServiceClient.create()
 
